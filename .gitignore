@@ -36,3 +36,6 @@ _debug
 _release
 _xdebug
 .vscode
+
+cmake*/
+.idea

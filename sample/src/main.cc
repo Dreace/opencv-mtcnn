@@ -20,8 +20,8 @@ static cv::Mat drawRectsAndPoints(const cv::Mat &img,
   for (auto &d : data) {
     cv::rectangle(outImg, d.first, cv::Scalar(0, 0, 255));
     auto pts = d.second;
-    for (size_t i = 0; i < pts.size(); ++i) {
-      cv::circle(outImg, pts[i], 3, cv::Scalar(0, 0, 255));
+    for (auto & pt : pts) {
+      cv::circle(outImg, pt, 3, cv::Scalar(0, 0, 255));
     }
   }
   return outImg;
@@ -40,12 +40,13 @@ int main(int argc, char **argv) {
   fs::path modelDir = fs::path(argv[1]);
 
   ProposalNetwork::Config pConfig;
-  pConfig.caffeModel = (modelDir / "det1.caffemodel").string();
+  pConfig.caffeModel = (modelDir / "p_net.onnx").string();
   pConfig.protoText = (modelDir / "det1.prototxt").string();
   pConfig.threshold = 0.6f;
 
   RefineNetwork::Config rConfig;
-  rConfig.caffeModel = (modelDir / "det2.caffemodel").string();
+//    rConfig.caffeModel = (modelDir / "r_net.onnx").string();
+    rConfig.caffeModel = (modelDir / "det2.caffemodel").string();
   rConfig.protoText = (modelDir / "det2.prototxt").string();
   rConfig.threshold = 0.7f;
 

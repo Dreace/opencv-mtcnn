@@ -15,7 +15,7 @@ struct BBox {
   cv::Rect getRect() const { return cv::Rect(x1, y1, x2 - x1, y2 - y1); }
 
   BBox getSquare() const {
-    BBox bbox;
+    BBox bbox{};
     float bboxWidth = x2 - x1;
     float bboxHeight = y2 - y1;
     float side = std::max(bboxWidth, bboxHeight);
@@ -34,21 +34,21 @@ struct Face {
   float ptsCoords[2 * NUM_PTS];
 
   static void applyRegression(std::vector<Face> &faces, bool addOne = false) {
-    for (size_t i = 0; i < faces.size(); ++i) {
+    for (auto & face : faces) {
       float bboxWidth =
-          faces[i].bbox.x2 - faces[i].bbox.x1 + static_cast<float>(addOne);
+          face.bbox.x2 - face.bbox.x1 + static_cast<float>(addOne);
       float bboxHeight =
-          faces[i].bbox.y2 - faces[i].bbox.y1 + static_cast<float>(addOne);
-      faces[i].bbox.x1 = faces[i].bbox.x1 + faces[i].regression[1] * bboxWidth;
-      faces[i].bbox.y1 = faces[i].bbox.y1 + faces[i].regression[0] * bboxHeight;
-      faces[i].bbox.x2 = faces[i].bbox.x2 + faces[i].regression[3] * bboxWidth;
-      faces[i].bbox.y2 = faces[i].bbox.y2 + faces[i].regression[2] * bboxHeight;
+          face.bbox.y2 - face.bbox.y1 + static_cast<float>(addOne);
+      face.bbox.x1 = face.bbox.x1 + face.regression[1] * bboxWidth;
+      face.bbox.y1 = face.bbox.y1 + face.regression[0] * bboxHeight;
+      face.bbox.x2 = face.bbox.x2 + face.regression[3] * bboxWidth;
+      face.bbox.y2 = face.bbox.y2 + face.regression[2] * bboxHeight;
     }
   }
 
   static void bboxes2Squares(std::vector<Face> &faces) {
-    for (size_t i = 0; i < faces.size(); ++i) {
-      faces[i].bbox = faces[i].bbox.getSquare();
+    for (auto & face : faces) {
+      face.bbox = face.bbox.getSquare();
     }
   }
 
